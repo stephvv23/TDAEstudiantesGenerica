@@ -14,56 +14,28 @@ public class TDAEstudiantes {
     private int longitud = 0;
 
     public TDAEstudiantes() {
-
-    }
-
-    public Estudiante crearEstudiante(String carnet, int edad) {
-        Estudiante estudiante = new Estudiante(carnet, edad);
-        return estudiante;
-    }
-
-    public void agregarInicio(Estudiante dato) {
-        NodoEstudiante nuevo = new NodoEstudiante(dato);
-        primero = nuevo;
-        ultimo = nuevo;
-
-    }
-
-    public void agregarFinal(Estudiante dato) {
-        NodoEstudiante nuevo = new NodoEstudiante(dato);
-        this.ultimo.setSiguiente(nuevo);
-        this.ultimo = nuevo;
-
-    }
-
-    public int actualizarLongitud() {
-        NodoEstudiante indice = primero;
-        int contador = 0;
-        while (indice != null) {
-            contador++;
-            indice = indice.getSiguiente();
-        }
-        longitud = contador;
-        return longitud;
+        primero = null;
+        ultimo = null;
     }
 
     public void insertar(Estudiante dato, int posicion) {
         NodoEstudiante nuevo = new NodoEstudiante(dato);
-        this.actualizarLongitud();
-        if (this.esVacio()) {
-            this.agregarInicio(dato);
+        longitud++;
+        if (this.esVacia()) {
+            primero = nuevo;
+            ultimo = nuevo;
         } else if (posicion == 0) {
             nuevo.setSiguiente(primero);
             primero = nuevo;
         } else if (posicion >= longitud) {
-            this.agregarFinal(dato);
+            this.ultimo.setSiguiente(nuevo);
+            this.ultimo = nuevo;
         } else {
             NodoEstudiante aux = null;
             NodoEstudiante indice = primero;
             int contador = 0;
             while (indice != null) {
                 if (posicion == contador) {
-
                     nuevo.setSiguiente(indice);
                     aux.setSiguiente(nuevo);
                     break;
@@ -76,63 +48,129 @@ public class TDAEstudiantes {
         }
     }
 
-    public String localiza(String carnet) {
-        NodoEstudiante indice = primero;
+    public void suprime(int posicion) {
+        longitud--;
+        if (!esVacia()) {
+            if (posicion <= longitud) {
 
-        while (indice != null) {
-            if (indice.getDato().getCarnet().equalsIgnoreCase(carnet)) {
-                return "Si existe";
-            }
-            indice = indice.getSiguiente();
-        }
-        return "No se encontro";
-    }
+                if (posicion == 0) {
+                    // Eliminar el primer nodo
+                    if (longitud > 0) {
+                        this.primero = primero.getSiguiente();
+                    } else {
+                        this.anula();
+                    }
+                } else if (posicion == longitud) {
+                    // Eliminar el último nodo
+                    NodoEstudiante indice = primero;
+                    int contador = 0;
+                    while (indice != null) {
 
-    public String estudiantesMismaEdad() {
+                        if ((longitud - 1) == contador) {
+                            indice.setSiguiente(null);
+                            ultimo = indice;
+                        }
 
-        int edad = 0, edadRepetida = 0;
-        int contador = 0, cantidadTotal = 0;
-        String mensaje="No hay estudiantes con edades repetidas";
-        for (NodoEstudiante indiceEdad = primero; indiceEdad != null; indiceEdad = indiceEdad.getSiguiente()) {
-            contador = 0;
-            for (NodoEstudiante indice = primero; indice != null; indice = indice.getSiguiente()) {
-                if (indiceEdad.getDato().getEdad() == indice.getDato().getEdad()) {
-                    edad = indiceEdad.getDato().getEdad();
-                    contador++;
+                        contador++;
+                        indice = indice.getSiguiente();
+                    }
+
+                } else {
+                    // Eliminar un nodo en medio de la lista
+                    NodoEstudiante indice = primero;
+                    NodoEstudiante anterior = null;
+                    int contador = 0;
+                    while (indice != null) {
+                        if (posicion == contador) {
+                            anterior.setSiguiente(indice.getSiguiente());
+                        }
+
+                        contador++;
+                        anterior = indice;
+                        indice = indice.getSiguiente();
+                    }
+
                 }
-            }
-            
-            if( contador > cantidadTotal){
-                edadRepetida = edad;
-                cantidadTotal = contador;
+            } else {
+                longitud++;
             }
         }
-        if(cantidadTotal !=1){
-            return mensaje= "Edad: "+Integer.toString(edadRepetida)+" Cantidad total:"+ Integer.toString(cantidadTotal);
-        }
-         return mensaje;
+        System.out.println("Posicion fuera del rango de la lista");
     }
+    
+    public Estudiante recupera(int posicion) {
 
-    public String imprimir() {
-        NodoEstudiante indice = primero;
+        NodoEstudiante indice = this.primero;
         int contador = 0;
-        String mensaje = "Lista: ";
         while (indice != null) {
-            mensaje += contador + "-[" + indice.getDato().getCarnet() + ", " + indice.getDato().getEdad() + "]  ";
+
+            if (contador == posicion) {
+                return indice.getDato();
+            }
             contador++;
             indice = indice.getSiguiente();
         }
-        return mensaje+"\n";
+        return null;
     }
 
-    public boolean esVacio() {
+    // DEBERIA SER CON DATO, no con carnet
+    public int localiza(String carnet) {
+        NodoEstudiante nodoIndice = primero;
+        int indice=0;
+        while (nodoIndice != null) {
+            
+            if (nodoIndice.getDato().getCarnet().equalsIgnoreCase(carnet)) {
+                return indice;
+            }
+            nodoIndice = nodoIndice.getSiguiente();
+            indice++;
+        }
+        return -1;
+    }
+
+//    public String estudiantesMismaEdad() {
+//
+//        int edad = 0, edadRepetida = 0;
+//        int contador = 0, cantidadTotal = 0;
+//        String mensaje = "No hay estudiantes con edades repetidas";
+//        for (NodoEstudiante indiceEdad = primero; indiceEdad != null; indiceEdad = indiceEdad.getSiguiente()) {
+//            contador = 0;
+//            for (NodoEstudiante indice = primero; indice != null; indice = indice.getSiguiente()) {
+//                if (indiceEdad.getDato().getEdad() == indice.getDato().getEdad()) {
+//                    edad = indiceEdad.getDato().getEdad();
+//                    contador++;
+//                }
+//            }
+//
+//            if (contador > cantidadTotal) {
+//                edadRepetida = edad;
+//                cantidadTotal = contador;
+//            }
+//        }
+//        if (cantidadTotal != 1) {
+//            return mensaje = "Edad: " + Integer.toString(edadRepetida) + " Cantidad total:" + Integer.toString(cantidadTotal);
+//        }
+//        return mensaje;
+//    }
+    public String imprimirLista() {
+        NodoEstudiante indice = primero;
+        int contador = 0;
+        String mensaje = "Lista: \n";
+        while (indice != null) {
+            mensaje += contador + " Carnet:[" + indice.getDato().getCarnet() + ", Edad:" + indice.getDato().getEdad() + "]   ";
+            contador++;
+            indice = indice.getSiguiente();
+        }
+        return mensaje;
+    }
+
+    public boolean esVacia() {
         return primero == null;
     }
-    
-    public void vaciar(){
-     primero = null;
-     ultimo = null;
+
+    public void anula() {
+        primero = null;
+        ultimo = null;
     }
 
-    
 }

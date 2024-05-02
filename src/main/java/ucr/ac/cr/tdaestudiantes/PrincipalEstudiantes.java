@@ -12,10 +12,10 @@ import javax.swing.JOptionPane;
  */
 public class PrincipalEstudiantes {
 
-    TDAEstudiantes listaEstudiantes;
+    private OperacionesLista operacionesLista;
 
     public PrincipalEstudiantes() {
-        listaEstudiantes = new TDAEstudiantes();
+        operacionesLista = new OperacionesLista();
         menu();
     }
 
@@ -38,26 +38,26 @@ public class PrincipalEstudiantes {
                     edad = Integer.parseInt(JOptionPane.showInputDialog("Digite la edaddel estudiante"));
                     posicion = Integer.parseInt(JOptionPane.showInputDialog("Digite la posicion donde desea almacenarlo"));
 
-                    listaEstudiantes.insertar(listaEstudiantes.crearEstudiante(carnet, edad), posicion);
+                    operacionesLista.insertarEstudiante(carnet, edad, posicion);
                     break;
                 case 2: //Localiza
                     carnet = JOptionPane.showInputDialog("Digite el carnet del estudiante");
-                    JOptionPane.showMessageDialog(null, listaEstudiantes.localiza(carnet));
+                    JOptionPane.showMessageDialog(null, operacionesLista.buscarEstudiante(carnet));
                     break;
                 case 3://Recupera
 
-                    JOptionPane.showMessageDialog(null, listaEstudiantes.estudiantesMismaEdad());
+                    JOptionPane.showMessageDialog(null, "En proceso ;b");
                     break;
-                case 4://Suprime
-                    JOptionPane.showMessageDialog(null, "Actualmente hay " + listaEstudiantes.actualizarLongitud() + " estudiantes registrados.");
+                case 4://
+                    JOptionPane.showMessageDialog(null, "Actualmente hay " + operacionesLista.totalEstudiantes() + " estudiantes registrados.");
 
                     break;
                 case 5://anula
-                    JOptionPane.showMessageDialog(null, listaEstudiantes.imprimir());
+                    JOptionPane.showMessageDialog(null, operacionesLista.imprimirLista());
 
                     break;
                 case 6://primero
-                    listaEstudiantes.vaciar();
+                    operacionesLista.eliminarLista();
                     break;
 
                 case 7://Salir
