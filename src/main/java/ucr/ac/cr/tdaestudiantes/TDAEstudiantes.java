@@ -11,7 +11,6 @@ public class TDAEstudiantes {
 
     private NodoEstudiante primero;
     private NodoEstudiante ultimo;
-    private int longitud = 0;
 
     public TDAEstudiantes() {
         primero = null;
@@ -20,26 +19,34 @@ public class TDAEstudiantes {
 
     public void insertar(Estudiante dato, int posicion) {
         NodoEstudiante nuevo = new NodoEstudiante(dato);
-        longitud++;
         if (this.esVacia()) {
             primero = nuevo;
             ultimo = nuevo;
         } else if (posicion == 0) {
             nuevo.setSiguiente(primero);
             primero = nuevo;
-        } else if (posicion >= longitud) {
-            this.ultimo.setSiguiente(nuevo);
-            this.ultimo = nuevo;
         } else {
+
             NodoEstudiante aux = null;
             NodoEstudiante indice = primero;
             int contador = 0;
+
             while (indice != null) {
+
+                
+
                 if (posicion == contador) {
+                    System.out.println("B");
                     nuevo.setSiguiente(indice);
                     aux.setSiguiente(nuevo);
                     break;
+                }else if (indice == ultimo) {
+                    System.out.println("A");
+                    this.ultimo.setSiguiente(nuevo);
+                    this.ultimo = nuevo;
+                    break;
                 }
+                
                 contador++;
                 aux = indice;
                 indice = indice.getSiguiente();
@@ -49,55 +56,44 @@ public class TDAEstudiantes {
     }
 
     public void suprime(int posicion) {
-        longitud--;
         if (!esVacia()) {
-            if (posicion <= longitud) {
 
-                if (posicion == 0) {
-                    // Eliminar el primer nodo
-                    if (longitud > 0) {
-                        this.primero = primero.getSiguiente();
-                    } else {
-                        this.anula();
-                    }
-                } else if (posicion == longitud) {
-                    // Eliminar el último nodo
-                    NodoEstudiante indice = primero;
-                    int contador = 0;
-                    while (indice != null) {
+            if (posicion == 0) {
 
-                        if ((longitud - 1) == contador) {
-                            indice.setSiguiente(null);
-                            ultimo = indice;
-                        }
-
-                        contador++;
-                        indice = indice.getSiguiente();
-                    }
-
+                // Eliminar el primer nod0
+                if (primero.getSiguiente() != null) {
+                    this.primero = primero.getSiguiente();
                 } else {
-                    // Eliminar un nodo en medio de la lista
-                    NodoEstudiante indice = primero;
-                    NodoEstudiante anterior = null;
-                    int contador = 0;
-                    while (indice != null) {
-                        if (posicion == contador) {
+                    this.anula();
+                }
+
+            } else {
+                // Eliminar un nodo en medio de la lista
+                NodoEstudiante indice = primero;
+                NodoEstudiante anterior = null;
+                int contador = 0;
+
+                while (indice != null) {
+                    if (posicion == contador) {
+
+                        if (indice == ultimo) {
+                            ultimo = anterior;
+                        } else {
                             anterior.setSiguiente(indice.getSiguiente());
                         }
-
-                        contador++;
-                        anterior = indice;
-                        indice = indice.getSiguiente();
                     }
 
+                    contador++;
+                    anterior = indice;
+                    indice = indice.getSiguiente();
                 }
-            } else {
-                longitud++;
+
             }
+
         }
-        System.out.println("Posicion fuera del rango de la lista");
+
     }
-    
+
     public Estudiante recupera(int posicion) {
 
         NodoEstudiante indice = this.primero;
@@ -114,12 +110,12 @@ public class TDAEstudiantes {
     }
 
     // DEBERIA SER CON DATO, no con carnet
-    public int localiza(String carnet) {
+    public int localiza(Estudiante dato) {
         NodoEstudiante nodoIndice = primero;
-        int indice=0;
+        int indice = 0;
         while (nodoIndice != null) {
-            
-            if (nodoIndice.getDato().getCarnet().equalsIgnoreCase(carnet)) {
+
+            if (nodoIndice.getDato().equals(dato)) {
                 return indice;
             }
             nodoIndice = nodoIndice.getSiguiente();
@@ -152,6 +148,7 @@ public class TDAEstudiantes {
 //        }
 //        return mensaje;
 //    }
+    
     public String imprimirLista() {
         NodoEstudiante indice = primero;
         int contador = 0;

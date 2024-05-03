@@ -39,10 +39,11 @@ public class PrincipalEstudiantes {
                     posicion = Integer.parseInt(JOptionPane.showInputDialog("Digite la posicion donde desea almacenarlo"));
 
                     operacionesLista.insertarEstudiante(carnet, edad, posicion);
+                    System.out.println(operacionesLista.imprimirLista());
                     break;
                 case 2: //Localiza
                     carnet = JOptionPane.showInputDialog("Digite el carnet del estudiante");
-                    JOptionPane.showMessageDialog(null, operacionesLista.buscarEstudiante(carnet));
+                    JOptionPane.showMessageDialog(null, operacionesLista.localizarEstudiante(carnet));
                     break;
                 case 3://Recupera
 
