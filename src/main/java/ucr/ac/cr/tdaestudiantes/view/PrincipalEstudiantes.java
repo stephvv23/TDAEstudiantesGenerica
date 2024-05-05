@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package ucr.ac.cr.tdaestudiantes;
+package ucr.ac.cr.tdaestudiantes.view;
 
 import javax.swing.JOptionPane;
+import ucr.ac.cr.tdaestudiantes.OperacionesLista;
 
 /**
  *
@@ -39,15 +40,15 @@ public class PrincipalEstudiantes {
                     posicion = Integer.parseInt(JOptionPane.showInputDialog("Digite la posicion donde desea almacenarlo"));
 
                     operacionesLista.insertarEstudiante(carnet, edad, posicion);
-                    System.out.println(operacionesLista.imprimirLista());
+
                     break;
                 case 2: //Localiza
                     carnet = JOptionPane.showInputDialog("Digite el carnet del estudiante");
                     JOptionPane.showMessageDialog(null, operacionesLista.localizarEstudiante(carnet));
                     break;
                 case 3://Recupera
-
-                    JOptionPane.showMessageDialog(null, "En proceso ;b");
+                    System.out.println(operacionesLista.imprimirLista());
+                    JOptionPane.showMessageDialog(null, operacionesLista.estudiantesMismaEdad());
                     break;
                 case 4://
                     JOptionPane.showMessageDialog(null, "Actualmente hay " + operacionesLista.totalEstudiantes() + " estudiantes registrados.");
